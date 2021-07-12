@@ -1,14 +1,12 @@
 <template>  
-  <router-link to="/">Home</router-link>
-  <router-link to="/list">List</router-link>    
-  <button @click="GoogleLogin">Login</button>
+  <!-- <router-link to="/">Home</router-link>
+  <router-link to="/list">List</router-link>
+  <router-link to="/Login">Login</router-link>    
+  <button @click="GoogleLogin">Login</button> -->
   <router-view></router-view>
 </template>
 
 <script>
-import AuthService from './service/auth_service.js'
-
-const authService = new AuthService
 
 export default {  
   name: 'App',
@@ -16,11 +14,7 @@ export default {
 
   },
   methods:{
-    GoogleLogin(){      
-      authService.login("Google").then(data => {
-        console.log(data)        
-      })
-    },    
+        
   }
 }
 </script>
@@ -32,5 +26,13 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: #adb5bd;  
+}
+body{
+  margin: 0;
+}
+
+html {
+  background-color: beige;
 }
 </style>
