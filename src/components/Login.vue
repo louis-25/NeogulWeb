@@ -17,6 +17,7 @@ export default {
         GoogleLogin() {
             const authService = new AuthService
             authService.login('Google').then(data => {
+                this.$store.state.firebase = data
                 console.log(data)
                 this.$router.push('/main')
             })

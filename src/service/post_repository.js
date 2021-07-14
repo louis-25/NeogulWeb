@@ -15,7 +15,8 @@ class PostRepository {
     //     firebaseApp.database().ref(`${userId}/posts/${post.id}`).set(post)
     // }
     savePost(userId, post){
-        firebaseApp.database().ref(`${userId}/posts/${post.no}`).set(post)
+        firebaseApp.database().ref(`user/${userId}/posts/${post.no}`).set(post)
+        firebaseApp.database().ref(`post/${post.no}`).set(post)
     }
     removeCard(userId, card) {
         firebaseApp.database().ref(`${userId}/cards/${card.id}`).remove()

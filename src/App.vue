@@ -9,8 +9,21 @@ export default {
   components: {
 
   },
+  data(){
+    return {
+      auth : this.$store.state.firebase
+    }
+  },
   methods:{
     
+  },  
+  watch:{
+    auth(firebase){
+      console.log('auth: ',firebase)
+      if (!firebase) {
+        this.$router.push('/login')
+      }
+    }
   }
 }
 </script>

@@ -2,30 +2,26 @@
     <div class="main-app">
     <div class="main-header">
         <ul class="header-button-left">
-            <li>Cancel</li>
+            <li @click="logout"><i class="fas fa-sign-out-alt"></i></li>
         </ul>
         <ul class="header-button-right">
-            <li>Next</li>
+            <li><i class="fas fa-pencil-alt"></i></li>
         </ul>        
-        <img src="../../assets/rakun.png" class="main-logo rakun-circle" />        
+        <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo rakun-circle" />        
     </div>
 
     <button @click="savePost" class="main-button mt-5">버튼</button>
     <button @click="syncPost" class="main-button mt-5">synctest</button>
-    <Container />
-
-    <div class="main-footer">
-        <ul class="footer-button-plus">
-            <input type="file" id="file" class="inputfile" />
-            <label for="file" class="input-plus">+</label>
-        </ul>
-    </div>
+    <Container />    
 </div>
 </template>
 <script>
 import Container from './Container.vue'
-import repository from '../../service/post_repository.js'
-const a = new repository;
+import Repository from '../../service/post_repository.js'
+import AuthService from '../../service/auth_service.js'
+const repository = new Repository;
+const authService = new AuthService;
+
 export default {    
     components:{
         Container
@@ -42,28 +38,20 @@ export default {
                 content: "임시 내용1",
                 date: "May 15",
                 filter: "perpetua"
-            },
-            imsiPost2: {
-                no : 2,
-                name : 'donghyeon2',        
-                likes: 43,
-                liked: false,
-                userImage: "https://placeimg.com/100/100/arch",
-                postImage: "https://placeimg.com/640/480/arch",
-                content: "임시 내용2",
-                date: "May 15",
-                filter: "perpetua"
             }
         }
     },
     methods: {
         savePost(){            
-            a.savePost('donghyeon',this.imsiPost)
-            // a.savePost('hyeon', this.imsiPost2)
+            repository.savePost(this.$store.state.firebase.additionalUserInfo.profile.name, this.imsiPost)
         },
         syncPost(){            
-            const data = a.syncPosts()
-            console.log(data)
+            // const data = a.syncPosts()            
+            console.log()
+        },
+        logout(){
+            authService.logout();
+            this.$router.push('/');
         }
     },
 }
@@ -84,7 +72,7 @@ ul {
     top: 0;
 }
 .header-button-left {
-    color: mediumseagreen;    
+    color: crimson;    
     width: 50px;
     padding-left: 10px;
     padding-bottom: 10px;
@@ -106,22 +94,6 @@ ul {
     left: 0;
     right: 0;
     top: 13px;
-}
-.main-footer {
-    width: 100%;
-    position: sticky;
-    bottom: 0;
-    padding-bottom: 10px;
-    background-color: white;
-}
-.footer-button-plus {
-    width: 80px;
-    margin: auto;
-    padding-left: 5px;
-    text-align: center;
-    cursor: pointer;    
-    font-size: 24px;
-    padding-top: 12px;
 }
 .sample-box {
     width: 100%;

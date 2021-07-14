@@ -4,9 +4,7 @@ import axios from 'axios'
 const store = createStore({
     state() {
         return {
-            like: 0,
-            likecheck: 0,
-            more : {}
+            firebase: Object,
         }
     },
     mutations : {    
