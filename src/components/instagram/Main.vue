@@ -6,10 +6,12 @@
         </ul>
         <ul class="header-button-right">
             <li>Next</li>
-        </ul>
-        <img src="../../assets/logo.png" class="main-logo" />
+        </ul>        
+        <img src="../../assets/rakun.png" class="main-logo rakun-circle" />        
     </div>
 
+    <button @click="savePost" class="main-button mt-5">버튼</button>
+    <button @click="syncPost" class="main-button mt-5">synctest</button>
     <Container />
 
     <div class="main-footer">
@@ -21,7 +23,50 @@
 </div>
 </template>
 <script>
-export default {}
+import Container from './Container.vue'
+import repository from '../../service/post_repository.js'
+const a = new repository;
+export default {    
+    components:{
+        Container
+    },
+    data(){
+        return{
+            imsiPost: {
+                no : 1,
+                name : 'donghyeon2',        
+                likes: 43,
+                liked: false,
+                userImage: "https://placeimg.com/100/100/arch",
+                postImage: "https://placeimg.com/640/480/arch",
+                content: "임시 내용1",
+                date: "May 15",
+                filter: "perpetua"
+            },
+            imsiPost2: {
+                no : 2,
+                name : 'donghyeon2',        
+                likes: 43,
+                liked: false,
+                userImage: "https://placeimg.com/100/100/arch",
+                postImage: "https://placeimg.com/640/480/arch",
+                content: "임시 내용2",
+                date: "May 15",
+                filter: "perpetua"
+            }
+        }
+    },
+    methods: {
+        savePost(){            
+            a.savePost('donghyeon',this.imsiPost)
+            // a.savePost('hyeon', this.imsiPost2)
+        },
+        syncPost(){            
+            const data = a.syncPosts()
+            console.log(data)
+        }
+    },
+}
 </script>
 <style>
 ul {
@@ -39,21 +84,22 @@ ul {
     top: 0;
 }
 .header-button-left {
-    color: skyblue;    
+    color: mediumseagreen;    
     width: 50px;
     padding-left: 10px;
+    padding-bottom: 10px;
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 10px;    
 }
 .header-button-right {    
-    color: skyblue;    
+    color: mediumseagreen;    
     width: 50px;
     cursor: pointer;
     padding-left: 0;
     margin-top: 10px;
 }
 .main-logo {
-    width: 22px;
+    width: 50px;
     margin: auto;
     display: block;
     position: absolute;
@@ -98,5 +144,11 @@ ul {
     position: relative;
     border-right: 1px solid #eee;
     border-left: 1px solid #eee;
+}
+.rakun-circle {          
+    margin-bottom: 20px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.8);
+    overflow: hidden;
 }
 </style>
