@@ -1,7 +1,7 @@
 <template>
     <div class="login-box">
         <div class="circle">
-            <img class="logo" src="../assets/rakun.png" alt="너굴맨" />
+            <img class="rakun" src="../assets/rakun.png" alt="너굴맨" />
         </div>
         <button @click="GoogleLogin" type="button" class="btn btn-primary">
             <i class="fab fa-google" style="margin-right: 10px;"></i> Login
@@ -18,20 +18,13 @@ export default {
             const authService = new AuthService
             authService.login('Google').then(data => {
                 console.log(data)
-                this.$router.push('/detail')
+                this.$router.push('/main')
             })
         },
     },
 }
 </script>
 <style>
-div {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: center;
-}
 
 .login-box {
     width: 350px;
@@ -39,13 +32,14 @@ div {
     border: 1px solid rgba(var(--b6a, 219, 219, 219), 1);
     border-radius: 5px;
     margin-top: 10%;
+    margin: 10% auto 0;
     padding: 20px;
     align-items: center;
     display: flex;
     flex-direction: column;
 }
 
-.logo {
+.rakun {
     height: 148px;
     margin: auto;
 }

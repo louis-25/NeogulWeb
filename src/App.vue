@@ -1,20 +1,16 @@
-<template>  
-  <!-- <router-link to="/">Home</router-link>
-  <router-link to="/list">List</router-link>
-  <router-link to="/Login">Login</router-link>    
-  <button @click="GoogleLogin">Login</button> -->
+<template>
   <router-view></router-view>
 </template>
 
 <script>
 
-export default {  
+export default {
   name: 'App',
   components: {
 
   },
   methods:{
-        
+    
   }
 }
 </script>
@@ -28,6 +24,13 @@ export default {
   color: #2c3e50;
   background-color: #adb5bd;  
 }
+
+div {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;    
+}
+
 body{
   margin: 0;
 }
