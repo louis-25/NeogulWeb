@@ -1,18 +1,27 @@
 <template>
     <div class="main-app">
     <div class="main-header">
+        <!--로그아웃 버튼-->
         <ul class="header-button-left">
             <li @click="logout"><i class="fas fa-sign-out-alt"></i></li>
         </ul>
+        <!--글작성 버튼-->
         <ul class="header-button-right">
-            <li><i class="fas fa-pencil-alt"></i></li>
+            <li>                
+                <div v-if="step == 0">
+                    <input @change="upload" type="file" id="file" class="inputfile"/>
+                    <label for="file"><i class="fas fa-pencil-alt"></i></label>
+                </div>
+                <label v-if="step == 1" @click="step=2" style="cursor: pointer;">Next</label>                
+                <label v-if="step == 2" @click="step=0" style="cursor: pointer;">발행</label>
+            </li>
         </ul>        
         <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo rakun-circle" />        
     </div>
 
     <button @click="savePost" class="main-button mt-5">버튼</button>
     <button @click="syncPost" class="main-button mt-5">synctest</button>
-    <Container />    
+    <Container :step="step" :uploadImage="uploadImage"/>    
 </div>
 </template>
 <script>
@@ -28,6 +37,7 @@ export default {
     },
     data(){
         return{
+            step : 0,
             imsiPost: {
                 no : 1,
                 name : 'donghyeon2',        
@@ -52,7 +62,13 @@ export default {
         logout(){
             authService.logout();
             this.$router.push('/');
-        }
+        },       
+        upload(e){
+            let file = e.target.files;
+            console.log(file[0])
+            this.uploadImage = URL.createObjectURL(file[0])
+            this.step = 1;
+        }, 
     },
 }
 </script>
@@ -79,6 +95,7 @@ ul {
     cursor: pointer;
     margin-top: 10px;    
 }
+
 .header-button-right {    
     color: mediumseagreen;    
     width: 50px;
@@ -122,5 +139,8 @@ ul {
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.8);
     overflow: hidden;
+}
+.inputfile {
+    display: none;
 }
 </style>

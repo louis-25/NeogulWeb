@@ -5,6 +5,7 @@ const store = createStore({
     state() {
         return {
             firebase: Object,
+            filter:"",
         }
     },
     mutations : {    
