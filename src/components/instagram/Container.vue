@@ -1,9 +1,7 @@
 <template>
     <div class="container">
         <div v-if="step == 0">
-            <Post/>
-            <Post/>
-            <Post/>
+            <Post :post="postData[i]" v-for="(post, i) in postData" :key="post" />
         </div>
         <!--필터 선택 페이지-->
         <div v-if = "step == 1">
@@ -33,8 +31,9 @@ export default {
         FilterBox
     },
     props:{
+        postData : Object,
         step : Number,
-        uploadImage: String
+        uploadImage : String
 
     },
     data() {

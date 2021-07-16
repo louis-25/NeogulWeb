@@ -6,6 +6,17 @@ const store = createStore({
         return {
             firebase: Object,
             filter:"",
+            postData: {
+                no : 3,
+                name : 'donghyeon2',        
+                likes: 43,
+                liked: false,
+                userImage: "https://placeimg.com/100/100/arch",
+                postImage: "https://placeimg.com/640/480/arch",
+                content: "임시 내용1",
+                date: "May 15",
+                filter: "perpetua"
+            },
         }
     },
     mutations : {    
@@ -21,6 +32,11 @@ const store = createStore({
                 state.like--
                 state.likecheck = 0
             }
+        },
+        postData(state, data){
+            state.postData = data
+            console.log('postData변경')
+            console.log('변경된 postData',state.postData);
         }
     },
     actions : { // ajax를 요청하는곳

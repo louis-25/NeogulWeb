@@ -13,7 +13,7 @@
                     <label for="file"><i class="fas fa-pencil-alt"></i></label>
                 </div>
                 <label v-if="step == 1" @click="step=2" style="cursor: pointer;">Next</label>                
-                <label v-if="step == 2" @click="step=0" style="cursor: pointer;">발행</label>
+                <label v-if="step == 2" @click="publish" style="cursor: pointer;">발행</label>
             </li>
         </ul>        
         <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo rakun-circle" />        
@@ -21,13 +21,16 @@
 
     <button @click="savePost" class="main-button mt-5">버튼</button>
     <button @click="syncPost" class="main-button mt-5">synctest</button>
-    <Container :step="step" :uploadImage="uploadImage"/>    
+    <button @click="test" class="main-button mt-5">test</button>
+    <Container @write="작성한글 = $evnet" :step="step" :uploadImage="uploadImage" :postData="postData"/>    
 </div>
 </template>
 <script>
 import Container from './Container.vue'
 import Repository from '../../service/post_repository.js'
 import AuthService from '../../service/auth_service.js'
+import {mapState} from 'vuex'
+
 const repository = new Repository;
 const authService = new AuthService;
 
@@ -35,11 +38,17 @@ export default {
     components:{
         Container
     },
+    computed:{
+        ...mapState(['postData'])
+    },
     data(){
         return{
             step : 0,
+            uploadImage:"",
+            작성한글: "",
+            filter: 'perpetua',             
             imsiPost: {
-                no : 1,
+                no : 2,
                 name : 'donghyeon2',        
                 likes: 43,
                 liked: false,
@@ -51,13 +60,28 @@ export default {
             }
         }
     },
+    mounted() {
+        this.syncPost()             
+    },
     methods: {
         savePost(){            
             repository.savePost(this.$store.state.firebase.additionalUserInfo.profile.name, this.imsiPost)
         },
-        syncPost(){            
-            // const data = a.syncPosts()            
-            console.log()
+        syncPost(){                        
+            repository.syncPosts()            
+            // this.postData = posts            
+            console.log('postData ',this.postData)
+            
+            // console.log('posts ',posts)
+            // for(let post in posts ){
+            //     console.log(`${post}`)
+            // }
+            
+        },     
+        test(){            
+            console.log('postData ',this.$store.state.postData[1].content)
+            console.log('postData ',this.$store.state.postData[2].no)
+            console.log('postData ',this.postData[1].userImage)
         },
         logout(){
             authService.logout();
@@ -68,7 +92,23 @@ export default {
             console.log(file[0])
             this.uploadImage = URL.createObjectURL(file[0])
             this.step = 1;
-        }, 
+        },
+        publish(){
+            let today = new Date();
+            let post = {
+                name : this.$store.state.firebase.additionalUserInfo.profile.name,        
+                likes: 45,
+                liked: false,
+                userImage: this.$store.state.firebase.additionalUserInfo.profile.picture,
+                postImage: this.uploadImage,
+                content: this.작성한글,
+                date: today.toLocaleDateString,
+                filter: this.filter
+            };
+            repository.savePost(this.$store.state.firebase.additionalUserInfo.profile.name, post)
+            this.postData.unshift(post);
+            this.step = 0;
+        },                
     },
 }
 </script>
@@ -86,6 +126,7 @@ ul {
     display: flex;
     justify-content: space-between;
     top: 0;
+    z-index: 2;
 }
 .header-button-left {
     color: crimson;    
