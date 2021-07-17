@@ -5,18 +5,9 @@ const store = createStore({
     state() {
         return {
             firebase: Object,
-            filter:"",
-            postData: {
-                no : 3,
-                name : 'donghyeon2',        
-                likes: 43,
-                liked: false,
-                userImage: "https://placeimg.com/100/100/arch",
-                postImage: "https://placeimg.com/640/480/arch",
-                content: "임시 내용1",
-                date: "May 15",
-                filter: "perpetua"
-            },
+            postData: Object,
+            step: 0,
+            filter:"",            
         }
     },
     mutations : {    

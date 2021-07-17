@@ -1,6 +1,6 @@
 <template>
     <div @click="filterSelect(filter)" :class="filter + ' filter-item'" :style="`background-image:url(${uploadImage})`">
-        <slot id="filter-text"></slot>        
+        <slot></slot>        
     </div>
 </template>
 <script>

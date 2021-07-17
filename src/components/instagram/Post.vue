@@ -48,9 +48,10 @@ export default {
     background-size: cover;
 }
 .post-content {
-    padding-left: 15px;
+    padding-left: 5px;
     padding-right: 15px;
     font-size: 14px;
+    text-align: left;
 }
 .date {
     font-size: 11px;

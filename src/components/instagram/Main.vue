@@ -7,22 +7,17 @@
         </ul>
         <!--글작성 버튼-->
         <ul class="header-button-right">
-            <li>                
-                <div v-if="step == 0">
-                    <input @change="upload" type="file" id="file" class="inputfile"/>
-                    <label for="file"><i class="fas fa-pencil-alt"></i></label>
-                </div>
-                <label v-if="step == 1" @click="step=2" style="cursor: pointer;">Next</label>                
-                <label v-if="step == 2" @click="publish" style="cursor: pointer;">발행</label>
+            <li v-if="step == 0">                                
+                <input @change="upload" type="file" id="file" class="inputfile"/>
+                <label for="file"><i class="fas fa-pencil-alt"></i></label>                
             </li>
+            <li v-if="step == 1"><label @click="step++" style="cursor: pointer;">Next</label></li>
+            <li v-if="step == 2"><label @click="publish" style="cursor: pointer;">발행</label></li>            
         </ul>        
-        <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo rakun-circle" />        
-    </div>
-
-    <button @click="savePost" class="main-button mt-5">버튼</button>
-    <button @click="syncPost" class="main-button mt-5">synctest</button>
-    <button @click="test" class="main-button mt-5">test</button>
-    <Container @write="작성한글 = $evnet" :step="step" :uploadImage="uploadImage" :postData="postData"/>    
+        <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo profile-circle" />        
+    </div>    
+    <button @click="test" class="mt-5">버튼</button>                
+    <Container @write="작성한글 = $evnet" :uploadImage="uploadImage"/>
 </div>
 </template>
 <script>
@@ -39,11 +34,10 @@ export default {
         Container
     },
     computed:{
-        ...mapState(['postData'])
+        ...mapState(['postData', 'step'])
     },
     data(){
-        return{
-            step : 0,
+        return{            
             uploadImage:"",
             작성한글: "",
             filter: 'perpetua',             
@@ -78,20 +72,20 @@ export default {
             // }
             
         },     
-        test(){            
-            console.log('postData ',this.$store.state.postData[1].content)
-            console.log('postData ',this.$store.state.postData[2].no)
-            console.log('postData ',this.postData[1].userImage)
+        test(){                        
+            console.log('postData ',this.postData)
+            console.log('step ',this.step)
         },
         logout(){
             authService.logout();
             this.$router.push('/');
         },       
-        upload(e){
+        async upload(e){
             let file = e.target.files;
             console.log(file[0])
             this.uploadImage = URL.createObjectURL(file[0])
-            this.step = 1;
+            this.step++;
+            console.log('step ',this.step)            
         },
         publish(){
             let today = new Date();
@@ -175,7 +169,7 @@ ul {
     border-right: 1px solid #eee;
     border-left: 1px solid #eee;
 }
-.rakun-circle {          
+.profile-circle {          
     margin-bottom: 20px;
     border-radius: 50%;
     background-color: rgba(0, 0, 0, 0.8);
