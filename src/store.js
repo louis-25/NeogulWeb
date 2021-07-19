@@ -28,6 +28,12 @@ const store = createStore({
             state.postData = data
             console.log('postData변경')
             console.log('변경된 postData',state.postData);
+        },
+        stepUp(state) {
+            state.step++;
+        },
+        stepReset(state) {
+            state.step = 0;
         }
     },
     actions : { // ajax를 요청하는곳

@@ -3,17 +3,20 @@
         <div v-if="step == 0">            
             <Post :post="postData[i+1]" v-for="(post,i) in postData" :key="post" />
         </div>
-        <!--필터 선택 페이지-->        
-        <div v-if="step == 1">            
+        <!--필터 선택 페이지-->
+        <!-- <div class="mt-5" v-if="step == 1">
+            hello
+        </div> -->
+        <div v-else-if="step == 1">           
             <div :class="selectFilter" class="upload-image" :style="{ backgroundImage: `url(${uploadImage})`}"></div>
-            <div class="filters">            
+            <div class="filters">
                 <FilterBox :filter="filter" :uploadImage="uploadImage" v-for="filter in filterList" :key="filter">
                     {{filter}}
-                </FilterBox>                        
+                </FilterBox>
             </div>
         </div>
         <!--글작성 페이지-->
-        <div v-if="step == 2">
+        <div v-else-if="step == 2">
             <div :class="selectFilter" class="upload-image" :style="{ backgroundImage: `url(${uploadImage})`}"></div>
             <div class="write">
                 <textarea @input="$emit('write', $event.target.value)" class="write-box">write!</textarea>

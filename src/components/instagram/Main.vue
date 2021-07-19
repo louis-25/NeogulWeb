@@ -11,20 +11,20 @@
                 <input @change="upload" type="file" id="file" class="inputfile"/>
                 <label for="file"><i class="fas fa-pencil-alt"></i></label>                
             </li>
-            <li v-if="step == 1"><label @click="step++" style="cursor: pointer;">Next</label></li>
+            <li v-if="step == 1"><label @click="this.$store.commit('stepUp')" style="cursor: pointer;">Next</label></li>
             <li v-if="step == 2"><label @click="publish" style="cursor: pointer;">발행</label></li>            
         </ul>        
         <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo profile-circle" />        
     </div>    
     <button @click="test" class="mt-5">버튼</button>                
-    <Container @write="작성한글 = $evnet" :uploadImage="uploadImage"/>
+    <Container @write="writeText = $event" :uploadImage="uploadImage"/>
 </div>
 </template>
 <script>
 import Container from './Container.vue'
 import Repository from '../../service/post_repository.js'
 import AuthService from '../../service/auth_service.js'
-import {mapState} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 
 const repository = new Repository;
 const authService = new AuthService;
@@ -34,13 +34,15 @@ export default {
         Container
     },
     computed:{
-        ...mapState(['postData', 'step'])
+        ...mapState(['postData', 'step', 'firebase']),
+        ...mapMutations(['stepUp', 'stepReset'])
     },
     data(){
         return{            
             uploadImage:"",
-            작성한글: "",
-            filter: 'perpetua',             
+            writeText: "",
+            filter: 'perpetua',         
+            no: 0,    
             imsiPost: {
                 no : 2,
                 name : 'donghyeon2',        
@@ -55,53 +57,57 @@ export default {
         }
     },
     mounted() {
-        this.syncPost()             
+        this.syncPost()       
+        this.emitter.on('filter', (a)=>{
+            this.filter = a;
+        })
+        console.log('Main is mounted')
+        // this.emitter.on('no', (a)=>{
+        //     this.no = a;
+        // })   
     },
     methods: {
-        savePost(){            
+        savePost(){        
+            //파이어베이스에 데이터 저장    
             repository.savePost(this.$store.state.firebase.additionalUserInfo.profile.name, this.imsiPost)
         },
         syncPost(){                        
-            repository.syncPosts()            
-            // this.postData = posts            
-            console.log('postData ',this.postData)
+            repository.syncPosts() //파이어베이스 데이터 읽어오기
             
-            // console.log('posts ',posts)
-            // for(let post in posts ){
-            //     console.log(`${post}`)
-            // }
-            
+            console.log('postData ',this.postData)                                    
         },     
         test(){                        
             console.log('postData ',this.postData)
             console.log('step ',this.step)
+            console.log('writeText ',this.writeText)
+            console.log('length ',this.$store.state.postData.length)
         },
         logout(){
             authService.logout();
             this.$router.push('/');
         },       
-        async upload(e){
+        upload(e){
             let file = e.target.files;
             console.log(file[0])
-            this.uploadImage = URL.createObjectURL(file[0])
-            this.step++;
-            console.log('step ',this.step)            
+            this.uploadImage = URL.createObjectURL(file[0])            
+            this.stepUp()
+            console.log('step ',this.step)
         },
         publish(){
             let today = new Date();
-            let post = {
-                name : this.$store.state.firebase.additionalUserInfo.profile.name,        
+            let post = {          
+                no:this.store.state.postData.length,      
+                name : this.firebase.additionalUserInfo.profile.name,        
                 likes: 45,
                 liked: false,
-                userImage: this.$store.state.firebase.additionalUserInfo.profile.picture,
+                userImage: this.firebase.additionalUserInfo.profile.picture,
                 postImage: this.uploadImage,
-                content: this.작성한글,
-                date: today.toLocaleDateString,
+                content: this.writeText,
+                date: today.toLocaleDateString(),
                 filter: this.filter
-            };
-            repository.savePost(this.$store.state.firebase.additionalUserInfo.profile.name, post)
-            this.postData.unshift(post);
-            this.step = 0;
+            };            
+            repository.savePost(this.$store.state.firebase.additionalUserInfo.profile.name, post)                        
+            this.stepReset()            
         },                
     },
 }

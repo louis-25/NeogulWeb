@@ -12,7 +12,7 @@ class PostRepository {
             value && store.commit('postData', value)
             // this.$store.state.postData = value;
         })               
-        return () => ref.off()
+        // return () => ref.off()
     }
     savePost(userId, post){
         firebaseApp.database().ref(`user/${userId}/posts/${post.no}`).set(post)
