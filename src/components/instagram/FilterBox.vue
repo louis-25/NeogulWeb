@@ -1,5 +1,5 @@
 <template>
-    <div @click="filterSelect(filter)" :class="filter + ' filter-item'" :style="`background-image:url(${uploadImage})`">
+    <div @click="filterSelect(filter)" :class="filter + ' filter-item'" :style="`background-image:url(${imageUrl})`">
         <slot></slot>        
     </div>
 </template>
@@ -12,7 +12,7 @@ export default {
         }
     },
     props : {
-        uploadImage : String,
+        imageUrl : String,
         filter : String
     }
 }

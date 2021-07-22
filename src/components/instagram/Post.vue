@@ -8,7 +8,7 @@
         <div class="post-content">
             <p>{{post.likes}} Likes</p>
             <p><strong>{{post.name}}</strong> {{post.content}}</p>
-            <p class="date">May 15</p>
+            <p class="date">{{post.date}}</p>
         </div>
     </div>
 </template>

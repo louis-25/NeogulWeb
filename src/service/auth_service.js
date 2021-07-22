@@ -5,9 +5,9 @@ class AuthService {
     // Google, Facebook, Apple, Twitter, Github ... 로그인 인증
     // 1. 각 로그인별 Provider객체를 생성한다
     // 2. 팝업창으로 로그인화면을 띄운다
-    login(providerName) {
+    async login(providerName) {
         const authProvider = new firebase.auth[`${providerName}AuthProvider`]();
-        return firebaseApp.auth().signInWithPopup(authProvider);
+        return await firebaseApp.auth().signInWithPopup(authProvider);
     }
 
     logout() {

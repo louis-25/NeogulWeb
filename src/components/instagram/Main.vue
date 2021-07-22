@@ -17,7 +17,7 @@
         <img :src="this.$store.state.firebase.additionalUserInfo.profile.picture" class="main-logo profile-circle" />        
     </div>    
     <button @click="test" class="mt-5">버튼</button>                
-    <Container @write="writeText = $event" :uploadImage="uploadImage"/>
+    <Container @write="writeText = $event" :imageUrl="imageUrl"/>
 </div>
 </template>
 <script>
@@ -25,6 +25,7 @@ import Container from './Container.vue'
 import Repository from '../../service/post_repository.js'
 import AuthService from '../../service/auth_service.js'
 import {mapState, mapMutations} from 'vuex'
+
 
 const repository = new Repository;
 const authService = new AuthService;
@@ -38,8 +39,8 @@ export default {
         ...mapMutations(['stepUp', 'stepReset'])
     },
     data(){
-        return{            
-            uploadImage:"",
+        return{                        
+            imageUrl:"",
             writeText: "",
             filter: 'perpetua',         
             no: 0,    
@@ -62,9 +63,6 @@ export default {
             this.filter = a;
         })
         console.log('Main is mounted')
-        // this.emitter.on('no', (a)=>{
-        //     this.no = a;
-        // })   
     },
     methods: {
         savePost(){        
@@ -81,6 +79,7 @@ export default {
             console.log('step ',this.step)
             console.log('writeText ',this.writeText)
             console.log('length ',this.$store.state.postData.length)
+            console.log('firebase ',this.$store.state.firebase)
         },
         logout(){
             authService.logout();
@@ -89,14 +88,15 @@ export default {
         upload(e){
             let file = e.target.files;
             console.log(file[0])
-            this.uploadImage = URL.createObjectURL(file[0])            
+            this.uploadImage = file[0]
+            this.imageUrl = URL.createObjectURL(file[0])            
             this.stepUp()
             console.log('step ',this.step)
         },
-        publish(){
+        async publish(){
             let today = new Date();
             let post = {          
-                no:this.store.state.postData.length,      
+                no:this.$store.state.postData.length,      
                 name : this.firebase.additionalUserInfo.profile.name,        
                 likes: 45,
                 liked: false,
